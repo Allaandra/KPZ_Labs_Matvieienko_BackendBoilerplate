@@ -21,7 +21,6 @@ export class ChildController {
     try {
       const { first_name, last_name, patronymic, birthday_date, groups_id } = req.body;
 
-      // Проверка входных данных
       if (!first_name || !last_name || !birthday_date || !groups_id) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
@@ -29,13 +28,11 @@ export class ChildController {
       const childRepo = getRepository(Child);
       const groupRepo = getRepository(KindergartenGroup);
 
-      // Ищем группу
       const group = await groupRepo.findOne(groups_id);
       if (!group) {
         return res.status(404).json({ message: 'Group not found' });
       }
 
-      // Создаём ребёнка
       const child = new Child();
       child.firstName = first_name;
       child.lastName = last_name;

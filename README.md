@@ -1,83 +1,141 @@
-#  TypeORM / Express / TypeScript RESTful API boilerplate
+# BackendBoilerplate (Lab 4, 5, 6)
 
-[![CI][build-badge]][build-url]
-[![TypeScript][typescript-badge]][typescript-url]
-[![prettier][prettier-badge]][prettier-url]
-![Heisenberg](misc/heisenberg.png)
+Конструювання Програмного Забезпечення (КПЗ)
 
-Boilerplate with focus on best practices and painless developer experience:
+Студентка: Матвєєнко Олександра  
+Група: ІПЗ-3.03
 
-- Minimal setup that can be extended 🔧
-- Spin it up with single command 🌀
-- TypeScript first
-- RESTful APIs
-- JWT authentication with role based authorization
+---
 
-## Requirements
+Проєкт реалізує серверну частину дитячого садка на базі Express + TypeORM + PostgreSQL. Передбачає CRUD API для основних сутностей, контейнеризацію через Docker, використання міграцій та тестування через Postman
 
-- [Node v16+](https://nodejs.org/)
-- [Docker](https://www.docker.com/)
+---
 
-## Running
+# Лабораторно-практична робота №3
 
-_Easily set up a local development environment with single command!_
+_Тема:_ Розширення бекенд-додатку власними сутностями та реалізація REST API
 
-- clone the repo
-- `npm run docker:dev` 🚀
+---
 
-Visit [localhost:4000](http://localhost:4000/) or if using Postman grab [config](/postman).
+## 📌 Реалізовані сутності та їхні зв’язки
 
-### _What happened_ 💥
+### 🧒 Сутність **Child** (Дитина)
 
-Containers created:
+Поля:
 
-- Postgres database container seeded with 💊 Breaking Bad characters in `Users` table (default credentials `user=walter`, `password=white` in [.env file](./.env))
-- Node (v16 Alpine) container with running boilerplate RESTful API service
-- and one Node container instance to run tests locally or in CI
+- `id`: number
+- `firstName`: string
+- `lastName`: string
+- `patronymic`: string (необов’язково)
+- `birthdayDate`: date
+- `group`: зв’язана сутність `KindergartenGroup`
 
-## Features:
+**Зв’язок:**  
+`Many-to-One` — кожна дитина належить до однієї групи.
 
-- [Express](https://github.com/expressjs/express) framework
-- [TypeScript v4](https://github.com/microsoft/TypeScript) codebase
-- [TypeORM](https://typeorm.io/) using Data Mapper pattern
-- [Docker](https://www.docker.com/) environment:
-  - Easily start local development using [Docker Compose](https://docs.docker.com/compose/) with single command `npm run docker:dev`
-  - Connect to different staging or production environments `npm run docker:[stage|prod]`
-  - Ready for **microservices** development and deployment.  
-    Once API changes are made, just build and push new docker image with your favourite CI/CD tool  
-    `docker build -t <username>/api-boilerplate:latest .`  
-    `docker push <username>/api-boilerplate:latest`
-  - Run unit, integration (or setup with your frontend E2E) tests as `docker exec -ti be_boilerplate_test sh` and `npm run test`
-- Contract first REST API design:
-  - never break API again with HTTP responses and requests payloads using [type definitions](./src/types/express/index.d.ts)
-  - Consistent schema error [response](./src/utils/response/custom-error/types.ts). Your frontend will always know how to handle errors thrown in `try...catch` statements 💪
-- JWT authentication and role based authorization using custom middleware
-- Set local, stage or production [environmental variables](./config) with [type definitions](./src/types/ProcessEnv.d.ts)
-- Logging with [morgan](https://github.com/expressjs/morgan)
-- Unit and integration tests with [Mocha](https://mochajs.org/) and [Chai](https://www.chaijs.com/)
-- Linting with [ESLint](https://eslint.org/)
-- [Prettier](https://prettier.io/) code formatter
-- Git hooks with [Husky](https://github.com/typicode/husky) and [lint-staged](https://github.com/okonet/lint-staged)
-- Automated npm & Docker dependency updates with [Renovate](https://github.com/renovatebot/renovate) (set to patch version only)
-- Commit messages must meet [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) format.  
-  After staging changes just run `npm run commit` and get instant feedback on your commit message formatting and be prompted for required fields by [Commitizen](https://github.com/commitizen/cz-cli)
+---
 
-## Other awesome boilerplates:
+### 🧩 Сутність **KindergartenGroup** (Група)
 
-Each boilerplate comes with it's own flavor of libraries and setup, check out others:
+Поля:
 
-- [Express and TypeORM with TypeScript](https://github.com/typeorm/typescript-express-example)
-- [Node.js, Express.js & TypeScript Boilerplate for Web Apps](https://github.com/jverhoelen/node-express-typescript-boilerplate)
-- [Express boilerplate for building RESTful APIs](https://github.com/danielfsousa/express-rest-es2017-boilerplate)
-- [A delightful way to building a RESTful API with NodeJs & TypeScript by @w3tecch](https://github.com/w3tecch/express-typescript-boilerplate)
+- `id`: number
+- `name`: string
+- `childCount`: number
+- `children`: список дітей у групі
 
-[build-badge]: https://github.com/mkosir/express-typescript-typeorm-boilerplate/actions/workflows/main.yml/badge.svg
-[build-url]: https://github.com/mkosir/express-typescript-typeorm-boilerplate/actions/workflows/main.yml
-[typescript-badge]: https://badges.frapsoft.com/typescript/code/typescript.svg?v=101
-[typescript-url]: https://github.com/microsoft/TypeScript
-[prettier-badge]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg
-[prettier-url]: https://github.com/prettier/prettier
+**Зв’язок:**  
+`One-to-Many` — одна група містить багато дітей.
 
-## Contributing
+---
 
-All contributions are welcome!
+## 🔗 JOIN (пов’язані дані)
+
+API повертає повні об’єкти сутностей.  
+Наприклад, GET `/children/:id` повертає:
+
+```json
+{
+  "id": 3,
+  "firstName": "Олена",
+  "lastName": "Кравченко",
+  "patronymic": "Іванівна",
+  "birthdayDate": "2018-03-15",
+  "group": {
+    "id": 38,
+    "name": "Group C",
+    "childCount": 1
+  }
+}
+```
+
+---
+
+## 🌐 Postman Environment Variables
+
+У проєкті використовується Postman Environment з такими змінними:
+
+| Variable     | Value                            |
+| ------------ | -------------------------------- |
+| **host**     | `http://localhost:4000/v1`       |
+| **baseUrl**  | `{{host}}`                       |
+| **language** | `en`                             |
+| **token**    | _Bearer JWT-token (авторизація)_ |
+
+Це дозволяє використовувати короткий і зручний запис ендпоінтів у колекції  
+**Наприклад:**
+
+```bash
+{{baseUrl}}/groups
+{{baseUrl}}/children
+```
+
+---
+
+## 📚 REST API Ендпоінти
+
+### 📁 groups
+
+🟧 POST /  
+Створення нової групи  
+`POST {{baseUrl}}/groups`
+
+🟦 GET /  
+Отримання списку всіх груп  
+`GET {{baseUrl}}/groups`
+
+🟩 GET /:id  
+Отримання конкретної групи за ID  
+`GET {{baseUrl}}/groups/:id`
+
+🟪 PUT /:id  
+Оновлення даних групи  
+`PUT {{baseUrl}}/groups/:id`
+
+🟥 DEL /:id  
+Видалення групи  
+`DELETE {{baseUrl}}/groups/:id`
+
+---
+
+### 📁 children
+
+🟧 POST /  
+Створення дитини  
+`POST {{baseUrl}}/children`
+
+🟦 GET /  
+Отримання списку всіх дітей (з групами — JOIN)  
+`GET {{baseUrl}}/children`
+
+🟩 GET /:id  
+Отримання інформації про дитину за ID  
+`GET {{baseUrl}}/children/:id`
+
+🟪 PUT /:id  
+Оновлення даних дитини  
+`PUT {{baseUrl}}/children/:id`
+
+🟥 DEL /:id  
+Видалення дитини  
+`DELETE {{baseUrl}}/children/:id`

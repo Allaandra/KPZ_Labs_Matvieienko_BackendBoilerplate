@@ -1,8 +1,10 @@
 {
   "info": {
-    "_postman_id": "da0fe49f-e424-4b96-8f55-49f7db0583dc",
+    "_postman_id": "5c7d2c3d-ed87-4c24-8198-e61dc3a4ffb6",
     "name": "RESTful API Boilerplate",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50022800",
+    "_collection_link": "https://aleksandrit1007ururu-3601296.postman.co/workspace/%D0%9C%D0%B0%D1%82%D0%B2%D1%94%D1%94%D0%BD%D0%BA%D0%BE-%D0%9E%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80%D0%B0's-Workspac~a26d5f86-1237-42f1-806a-e37bc1d42dc9/collection/50022800-5c7d2c3d-ed87-4c24-8198-e61dc3a4ffb6?action=share&source=collection_link&creator=50022800"
   },
   "item": [
     {
@@ -14,7 +16,6 @@
             {
               "listen": "test",
               "script": {
-                "id": "81ebd7f4-cc11-473a-a6b3-85b003f7222b",
                 "exec": [
                   "var jsonData = JSON.parse(responseBody);",
                   "",
@@ -29,9 +30,8 @@
             "header": [
               {
                 "key": "Content-Type",
-                "name": "Content-Type",
-                "type": "text",
-                "value": "application/x-www-form-urlencoded"
+                "value": "application/x-www-form-urlencoded",
+                "type": "text"
               },
               {
                 "key": "Accept-Language",
@@ -69,7 +69,6 @@
             "header": [
               {
                 "key": "Content-Type",
-                "name": "Content-Type",
                 "value": "application/x-www-form-urlencoded",
                 "type": "text"
               },
@@ -114,9 +113,8 @@
             "header": [
               {
                 "key": "Content-Type",
-                "name": "Content-Type",
-                "type": "text",
-                "value": "application/x-www-form-urlencoded"
+                "value": "application/x-www-form-urlencoded",
+                "type": "text"
               },
               {
                 "key": "Authorization",
@@ -157,8 +155,7 @@
           },
           "response": []
         }
-      ],
-      "protocolProfileBehavior": {}
+      ]
     },
     {
       "name": "/misc",
@@ -170,14 +167,13 @@
             "header": [
               {
                 "key": "Content-Type",
-                "name": "Content-Type",
-                "type": "text",
-                "value": "application/x-www-form-urlencoded"
+                "value": "application/x-www-form-urlencoded",
+                "type": "text"
               },
               {
                 "key": "Accept-Language",
-                "type": "text",
-                "value": "sl-SI"
+                "value": "sl-SI",
+                "type": "text"
               }
             ],
             "body": {
@@ -198,8 +194,7 @@
           },
           "response": []
         }
-      ],
-      "protocolProfileBehavior": {}
+      ]
     },
     {
       "name": "/users",
@@ -214,14 +209,13 @@
             "header": [
               {
                 "key": "Content-Type",
-                "name": "Content-Type",
-                "type": "text",
-                "value": "application/x-www-form-urlencoded"
+                "value": "application/x-www-form-urlencoded",
+                "type": "text"
               },
               {
                 "key": "Accept-Language",
-                "type": "text",
-                "value": "sl-SI"
+                "value": "sl-SI",
+                "type": "text"
               },
               {
                 "key": "Authorization",
@@ -251,19 +245,18 @@
             "header": [
               {
                 "key": "Content-Type",
-                "name": "Content-Type",
-                "type": "text",
-                "value": "application/x-www-form-urlencoded"
+                "value": "application/x-www-form-urlencoded",
+                "type": "text"
               },
               {
                 "key": "Accept-Language",
-                "type": "text",
-                "value": "sl-SI"
+                "value": "sl-SI",
+                "type": "text"
               },
               {
                 "key": "Authorization",
-                "type": "text",
-                "value": "{{token}}"
+                "value": "{{token}}",
+                "type": "text"
               }
             ],
             "body": {
@@ -285,19 +278,18 @@
             "header": [
               {
                 "key": "Content-Type",
-                "name": "Content-Type",
-                "type": "text",
-                "value": "application/x-www-form-urlencoded"
+                "value": "application/x-www-form-urlencoded",
+                "type": "text"
               },
               {
                 "key": "Accept-Language",
-                "type": "text",
-                "value": "sl-SI"
+                "value": "sl-SI",
+                "type": "text"
               },
               {
                 "key": "Authorization",
-                "type": "text",
-                "value": "{{token}}"
+                "value": "{{token}}",
+                "type": "text"
               }
             ],
             "body": {
@@ -319,19 +311,18 @@
             "header": [
               {
                 "key": "Content-Type",
-                "name": "Content-Type",
-                "type": "text",
-                "value": "application/x-www-form-urlencoded"
+                "value": "application/x-www-form-urlencoded",
+                "type": "text"
               },
               {
                 "key": "Accept-Language",
-                "type": "text",
-                "value": "sl-SI"
+                "value": "sl-SI",
+                "type": "text"
               },
               {
                 "key": "Authorization",
-                "type": "text",
-                "value": "{{token}}"
+                "value": "{{token}}",
+                "type": "text"
               }
             ],
             "body": {
@@ -357,9 +348,7 @@
           },
           "response": []
         }
-      ],
-      "protocolProfileBehavior": {}
+      ]
     }
-  ],
-  "protocolProfileBehavior": {}
+  ]
 }
