@@ -21,7 +21,9 @@
                   "",
                   "postman.setEnvironmentVariable(\"token\", jsonData.data);"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
               }
             }
           ],
@@ -55,9 +57,9 @@
               ]
             },
             "url": {
-              "raw": "{{baseUrl}}/login",
+              "raw": "{{baseUrl}}/auth/login",
               "host": ["{{baseUrl}}"],
-              "path": ["login"]
+              "path": ["auth", "login"]
             }
           },
           "response": []
@@ -79,29 +81,13 @@
               }
             ],
             "body": {
-              "mode": "urlencoded",
-              "urlencoded": [
-                {
-                  "key": "email",
-                  "value": "admin1@admin.com",
-                  "type": "text"
-                },
-                {
-                  "key": "password",
-                  "value": "admin",
-                  "type": "text"
-                },
-                {
-                  "key": "passwordConfirm",
-                  "value": "admin",
-                  "type": "text"
-                }
-              ]
+              "mode": "raw",
+              "raw": ""
             },
             "url": {
-              "raw": "{{baseUrl}}/register",
+              "raw": "{{baseUrl}}/auth/register",
               "host": ["{{baseUrl}}"],
-              "path": ["register"]
+              "path": ["auth", "register"]
             }
           },
           "response": []
@@ -148,9 +134,9 @@
               ]
             },
             "url": {
-              "raw": "{{baseUrl}}/change-password",
+              "raw": "{{baseUrl}}/auth/change-password",
               "host": ["{{baseUrl}}"],
-              "path": ["change-password"]
+              "path": ["auth", "change-password"]
             }
           },
           "response": []
