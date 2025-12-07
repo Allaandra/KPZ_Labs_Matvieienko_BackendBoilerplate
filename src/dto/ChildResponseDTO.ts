@@ -9,7 +9,7 @@ export class ChildResponseDTO {
   group: {
     id: number;
     name: string;
-    childCount: number;
+    //childCount: number;
   };
 
   constructor(child: Child) {
@@ -22,7 +22,7 @@ export class ChildResponseDTO {
     this.group = {
       id: child.group.id,
       name: child.group.name,
-      childCount: child.group.childCount,
+      //childCount: child.group.childCount,
     };
   }
 }

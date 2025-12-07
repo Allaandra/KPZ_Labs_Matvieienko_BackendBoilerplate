@@ -1,13 +1,15 @@
 import { Router } from 'express';
 
 import { ChildController } from '../../controllers/ChildController';
+import { validateCreateChild } from '../../middleware/Children/validateCreateChild';
+import { validateUpdateChild } from '../../middleware/Children/validateUpdateChild';
 
 const router = Router();
 
-router.get('/', ChildController.getAll);
-router.get('/:id', ChildController.getOne);
-router.post('/', ChildController.create);
+router.get('/', ChildController.findAll);
+router.get('/:id', ChildController.findOne);
+router.post('/', validateCreateChild, ChildController.create);
+router.put('/:id', validateUpdateChild, ChildController.update);
 router.delete('/:id', ChildController.delete);
-router.put('/:id', ChildController.update);
 
 export default router;

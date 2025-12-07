@@ -1,7 +1,19 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { CustomError } from '../utils/response/custom-error/CustomError';
+import { AppError } from '../errors/AppError';
 
-export const errorHandler = (err: CustomError, req: Request, res: Response, next: NextFunction) => {
-  return res.status(err.HttpStatusCode).json(err.JSON);
-};
+export function errorHandler(err: Error, _req: Request, res: Response, _next: NextFunction) {
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({
+      status: 'error',
+      message: err.message,
+    });
+  }
+
+  console.error('UNEXPECTED ERROR', err);
+
+  return res.status(500).json({
+    status: 'error',
+    message: 'Internal server error',
+  });
+}

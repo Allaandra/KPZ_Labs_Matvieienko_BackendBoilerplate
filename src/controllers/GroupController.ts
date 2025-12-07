@@ -1,41 +1,50 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
 
-import { KindergartenGroup } from '../orm/entities/users/KindergartenGroup';
+import { GroupResponseDTO } from '../dto/GroupResponseDTO';
+import { GroupService } from '../services/GroupService';
 
 export class GroupController {
-  static async getAll(req: Request, res: Response) {
-    const repo = getRepository(KindergartenGroup);
-    const groups = await repo.find({ relations: ['children'] });
-    return res.json(groups);
+  static async findAll(_req: Request, res: Response) {
+    const service = new GroupService();
+    const groups = await service.findAll();
+
+    return res.json(groups.map((g) => new GroupResponseDTO(g, false)));
   }
 
-  static async getOne(req: Request, res: Response) {
-    const repo = getRepository(KindergartenGroup);
-    const group = await repo.findOne({
-      where: { id: Number(req.params.id) },
-      relations: ['children'],
-    });
-    return res.json(group);
+  static async findOne(req: Request, res: Response) {
+    const service = new GroupService();
+    const group = await service.findOne(Number(req.params.id));
+
+    return res.json(new GroupResponseDTO(group, true));
   }
 
   static async create(req: Request, res: Response) {
-    const repo = getRepository(KindergartenGroup);
-    const newGroup = repo.create(req.body);
-    await repo.save(newGroup);
-    return res.json(newGroup);
+    const service = new GroupService();
+
+    const group = await service.create({
+      name: req.body.name,
+    });
+
+    return res.status(201).json(new GroupResponseDTO(group));
   }
 
   static async update(req: Request, res: Response) {
-    const repo = getRepository(KindergartenGroup);
-    await repo.update(req.params.id, req.body);
-    const updated = await repo.findOne({ where: { id: Number(req.params.id) } });
-    return res.json(updated);
+    const service = new GroupService();
+    const id = Number(req.params.id);
+
+    const group = await service.update(id, {
+      name: req.body.name,
+    });
+
+    return res.json(new GroupResponseDTO(group));
   }
 
   static async delete(req: Request, res: Response) {
-    const repo = getRepository(KindergartenGroup);
-    await repo.delete(req.params.id);
-    return res.json({ message: 'Group deleted' });
+    const service = new GroupService();
+    const id = Number(req.params.id);
+
+    await service.delete(id);
+
+    return res.json({ message: 'Group deleted successfully' });
   }
 }

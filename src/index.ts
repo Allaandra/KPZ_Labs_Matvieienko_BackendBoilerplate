@@ -12,6 +12,7 @@ import morgan from 'morgan';
 import './utils/response/customSuccess';
 import { errorHandler } from './middleware/errorHandler';
 import { getLanguage } from './middleware/getLanguage';
+import { jsonErrorHandler } from './middleware/jsonErrorHandler';
 import { dbCreateConnection } from './orm/dbCreateConnection';
 import routes from './routes';
 
@@ -31,6 +32,9 @@ try {
   console.log(err);
 }
 app.use(morgan('combined'));
+
+app.use(express.json());
+app.use(jsonErrorHandler);
 
 app.use('/', routes);
 
