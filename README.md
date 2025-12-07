@@ -115,49 +115,25 @@ API повертає повні об’єкти сутностей.
 
 ### 📁 groups
 
-🟧 POST /  
-Створення нової групи  
-`POST {{baseUrl}}/groups`
-
-🟦 GET /  
-Отримання списку всіх груп  
-`GET {{baseUrl}}/groups`
-
-🟩 GET /:id  
-Отримання конкретної групи за ID  
-`GET {{baseUrl}}/groups/:id`
-
-🟪 PUT /:id  
-Оновлення даних групи  
-`PUT {{baseUrl}}/groups/:id`
-
-🟥 DEL /:id  
-Видалення групи  
-`DELETE {{baseUrl}}/groups/:id`
+| Method  | Endpoint      | Опис                             | Screenshots                                                             |
+| ------- | ------------- | -------------------------------- | ----------------------------------------------------------------------- |
+| 🟧 POST | `/groups`     | Створення нової групи            | <img src="screenshots/Postman/Lab5/groups/post.png" width="400" />      |
+| 🟦 GET  | `/groups`     | Отримання списку всіх груп       | <img src="screenshots/Postman/Lab5/groups/get.png" width="400" />       |
+| 🟩 GET  | `/groups/:id` | Отримання конкретної групи за ID | <img src="screenshots/Postman/Lab5/groups/get_id.png" width="400" />    |
+| 🟪 PUT  | `/groups/:id` | Оновлення даних групи            | <img src="screenshots/Postman/Lab5/groups/put_id.png" width="400" />    |
+| 🟥 DEL  | `/groups/:id` | Видалення групи                  | <img src="screenshots/Postman/Lab5/groups/delete_id.png" width="400" /> |
 
 ---
 
 ### 📁 children
 
-🟧 POST /  
-Створення дитини  
-`POST {{baseUrl}}/children`
-
-🟦 GET /  
-Отримання списку всіх дітей (з групами — JOIN)  
-`GET {{baseUrl}}/children`
-
-🟩 GET /:id  
-Отримання інформації про дитину за ID  
-`GET {{baseUrl}}/children/:id`
-
-🟪 PUT /:id  
-Оновлення даних дитини  
-`PUT {{baseUrl}}/children/:id`
-
-🟥 DEL /:id  
-Видалення дитини  
-`DELETE {{baseUrl}}/children/:id`
+| Method  | Endpoint        | Опис                              | Screenshots                                                               |
+| ------- | --------------- | --------------------------------- | ------------------------------------------------------------------------- |
+| 🟧 POST | `/children`     | Створення нової дитини            | <img src="screenshots/Postman/Lab5/children/post.png" width="400" />      |
+| 🟦 GET  | `/children`     | Отримання списку всіх дітей       | <img src="screenshots/Postman/Lab5/children/get.png" width="400" />       |
+| 🟩 GET  | `/children/:id` | Отримання конкретної дитини за ID | <img src="screenshots/Postman/Lab5/children/get_id.png" width="400" />    |
+| 🟪 PUT  | `/children/:id` | Оновлення даних дитини            | <img src="screenshots/Postman/Lab5/children/put_id.png" width="400" />    |
+| 🟥 DEL  | `/children/:id` | Видалення дитини                  | <img src="screenshots/Postman/Lab5/children/delete_id.png" width="400" /> |
 
 ---
 
@@ -364,6 +340,30 @@ TypeORM репозиторії відповідають за:
 - завантаження звʼязків `(relations: ['children'])`
 
 > Контролери і middleware не мають напряму працювати з БД
+
+## 📸 REST API Ендпоінти - Скрини з Postman
+
+### 📁 groups
+
+| Method  | Endpoint      | Опис                             | Success Screenshot                                                      | Fail Screenshot                                                              |
+| ------- | ------------- | -------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| 🟧 POST | `/groups`     | Створення нової групи            | <img src="screenshots/Postman/Lab6/groups/post.png" width="400" />      | <img src="screenshots/Postman/Lab6/groups/post_fail.png" width="400" />      |
+| 🟦 GET  | `/groups`     | Отримання списку всіх груп       | <img src="screenshots/Postman/Lab6/groups/get.png" width="400" />       | -                                                                            |
+| 🟩 GET  | `/groups/:id` | Отримання конкретної групи за ID | <img src="screenshots/Postman/Lab6/groups/get_id.png" width="400" />    | <img src="screenshots/Postman/Lab6/groups/get_id_fail.png" width="400" />    |
+| 🟪 PUT  | `/groups/:id` | Оновлення даних групи            | <img src="screenshots/Postman/Lab6/groups/put_id.png" width="400" />    | <img src="screenshots/Postman/Lab6/groups/put_id_fail.png" width="400" />    |
+| 🟥 DEL  | `/groups/:id` | Видалення групи                  | <img src="screenshots/Postman/Lab6/groups/delete_id.png" width="400" /> | <img src="screenshots/Postman/Lab6/groups/delete_id_fail.png" width="400" /> |
+
+---
+
+### 📁 children
+
+| Method  | Endpoint        | Опис                              | Success Screenshot                                                        | Fail Screenshot                                                                |
+| ------- | --------------- | --------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| 🟧 POST | `/children`     | Створення нової дитини            | <img src="screenshots/Postman/Lab6/children/post.png" width="400" />      | -                                                                              |
+| 🟦 GET  | `/children`     | Отримання списку всіх дітей       | <img src="screenshots/Postman/Lab6/children/get.png" width="400" />       | -                                                                              |
+| 🟩 GET  | `/children/:id` | Отримання конкретної дитини за ID | <img src="screenshots/Postman/Lab6/children/get_id.png" width="400" />    | <img src="screenshots/Postman/Lab6/children/get_id_fail.png" width="400" />    |
+| 🟪 PUT  | `/children/:id` | Оновлення даних дитини            | <img src="screenshots/Postman/Lab6/children/put_id.png" width="400" />    | <img src="screenshots/Postman/Lab6/children/put_id_fail.png" width="400" />    |
+| 🟥 DEL  | `/children/:id` | Видалення дитини                  | <img src="screenshots/Postman/Lab6/children/delete_id.png" width="400" /> | <img src="screenshots/Postman/Lab6/children/delete_id_fail.png" width="400" /> |
 
 # Висновок
 
