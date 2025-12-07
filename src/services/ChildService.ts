@@ -72,8 +72,6 @@ export class ChildService {
         where: { id: data.groupId },
       });
 
-      if (!newGroup) throw new AppError('New group not found', 404);
-
       // Переносим в новую группу
       child.group = newGroup;
 
