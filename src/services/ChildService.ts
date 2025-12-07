@@ -15,16 +15,10 @@ export class ChildService {
   }
 
   async findOne(id: number) {
-    const child = await this.childRepository.findOne({
+    return await this.childRepository.findOne({
       where: { id },
       relations: ['group'],
     });
-
-    if (!child) {
-      throw new AppError('Child not found', 404);
-    }
-
-    return child;
   }
 
   async create(data: any) {

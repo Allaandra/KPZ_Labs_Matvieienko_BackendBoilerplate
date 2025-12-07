@@ -7,7 +7,26 @@
 
 ---
 
-Проєкт реалізує серверну частину дитячого садка на базі Express + TypeORM + PostgreSQL. Передбачає CRUD API для основних сутностей, контейнеризацію через Docker, використання міграцій та тестування через Postman
+Проєкт реалізує серверну частину системи управління дитячим садком на базі Express, TypeORM та PostgreSQL. Забезпечує повноцінне REST API для роботи з основними сутностями — дитячими групами та дітьми. Реалізовано повний набір CRUD-операцій, використання міграцій, контейнеризація через Docker, а також тестування API через Postman
+
+Архітектура побудована за принципом розділення відповідальності:
+
+- Controller → Service → Repository  
+  Контролери відповідають за оркестрацію запитів, сервісний шар містить бізнес-логіку, а репозиторії забезпечують доступ до бази даних
+- Middleware  
+  Використовується для валідації даних, обробки помилок та перевірки коректності запитів ще до їх потрапляння в бізнес-логіку
+- DTO (Data Transfer Object)  
+  Відповіді API формуються через DTO, що забезпечує контрольований, безпечний та передбачуваний формат даних, приховуючи внутрішню структуру бази
+
+Загалом проєкт демонструє правильно організовану бекенд-архітектуру з чітким поділом обов’язків, структурованою логікою та якісною обробкою помилок
+
+---
+
+# Посилання:
+
+[Частина 1 - Лабораторно-практична №5]()  
+[Частина 2 - Лабораторно-практична №6]()  
+[Висновок]()
 
 ---
 
@@ -139,3 +158,211 @@ API повертає повні об’єкти сутностей.
 🟥 DEL /:id  
 Видалення дитини  
 `DELETE {{baseUrl}}/children/:id`
+
+---
+
+# Лабораторно-практична робота №6
+
+**Тема:** Впровадження сервісного шару, валідації та DTO
+
+---
+
+## 🏗 Архітектура проєкту
+
+У лабораторній роботі №6 виконано рефакторинг: логіка розділена між кількома незалежними шарами
+
+### 🔹 Middleware — валідація вхідних даних
+
+Мета: перевірити дані до того, як запит потрапить у контролер
+
+Middleware не містить бізнес-логіки — тільки:
+
+- перевірка типів
+- перевірка формату JSON
+- перевірка обов’язкових полів
+- повернення помилки 400 при некоректних даних
+
+> Тут перехоплюються всі неправильні дані, щоб не падали controller/service
+
+#### 🧩 Приклад Middleware (валідація дитини)
+
+```typescript
+import { Request, Response, NextFunction } from 'express';
+
+export async function validateUpdateChild(req: Request, res: Response, next: NextFunction) {
+  const { groupId, firstName, lastName, patronymic, birthdayDate } = req.body;
+
+  if (groupId !== undefined && isNaN(Number(groupId))) {
+    return res.status(400).json({ error: 'groupId must be a number' });
+  }
+
+  if (firstName !== undefined && typeof firstName !== 'string') {
+    return res.status(400).json({ error: 'firstName must be a string' });
+  }
+
+  if (patronymic !== undefined && typeof patronymic !== 'string') {
+    return res.status(400).json({ error: 'patronymic must be a string' });
+  }
+
+  if (birthdayDate !== undefined && isNaN(Date.parse(birthdayDate))) {
+    return res.status(400).json({ error: 'birthdayDate must be a valid date' });
+  }
+
+  return next();
+}
+```
+
+---
+
+### 🔹 Controller — оркестрація процесу
+
+Контролер:
+
+- отримує вже валідовані дані
+- викликає відповідний метод сервісу
+- перетворює результат у DTO
+- повертає відповідь клієнту
+
+> Контролер не містить бізнес-логіки
+
+#### 📦 Приклад Controller
+
+```typescript
+import { Request, Response } from 'express';
+
+import { ChildResponseDTO } from '../dto/ChildResponseDTO';
+import { ChildService } from '../services/ChildService';
+
+export class ChildController {
+  static async findAll(_req: Request, res: Response) {
+    const service = new ChildService();
+    const children = await service.findAll();
+    return res.json(children.map((c) => new ChildResponseDTO(c)));
+  }
+
+  static async findOne(req: Request, res: Response) {
+    const service = new ChildService();
+    const child = await service.findOne(Number(req.params.id));
+    return res.json(new ChildResponseDTO(child));
+  }
+
+  static async create(req: Request, res: Response) {
+    const service = new ChildService();
+    const child = await service.create(req.body);
+    return res.status(201).json(new ChildResponseDTO(child));
+  }
+
+  static async update(req: Request, res: Response) {
+    const service = new ChildService();
+    const child = await service.update(Number(req.params.id), req.body);
+    return res.status(201).json(new ChildResponseDTO(child));
+  }
+
+  static async delete(req: Request, res: Response) {
+    const service = new ChildService();
+    const result = await service.delete(Number(req.params.id));
+    return res.json(result);
+  }
+}
+```
+
+#### 📦 Приклад ResponseDTO
+
+```typescript
+import { Child } from '../orm/entities/users/Child';
+
+export class ChildResponseDTO {
+  id: number;
+  firstName: string;
+  lastName: string;
+  patronymic?: string;
+  birthdayDate: Date;
+  group: {
+    id: number;
+    name: string;
+  };
+
+  constructor(child: Child) {
+    this.id = child.id;
+    this.firstName = child.firstName;
+    this.lastName = child.lastName;
+    this.patronymic = child.patronymic;
+    this.birthdayDate = child.birthdayDate;
+
+    this.group = {
+      id: child.group.id,
+      name: child.group.name,
+    };
+  }
+}
+```
+
+---
+
+### 🔹 Service — бізнес-логіка
+
+У сервісах:
+
+- робота з репозиторіями TypeORM
+- перевірка існування сутностей
+- зміна даних
+- логіка оновлення лічильників (childCount)
+- помилки виду "Group not found" і т.д.
+
+> Сервіс — це серце програми
+
+⚙️ Приклад Service-класу
+
+```typescript
+import { getConnection } from 'typeorm';
+
+import { KindergartenGroup } from '../orm/entities/users/KindergartenGroup';
+
+export class GroupService {
+  private repo = getConnection().getRepository(KindergartenGroup);
+
+  async findAll() {
+    return await this.repo.find();
+  }
+
+  async findOne(id: number) {
+    return await this.repo.findOne({ where: { id }, relations: ['children'] });
+  }
+
+  async create(data: { name: string }) {
+    const group = this.repo.create({
+      name: data.name,
+      childCount: 0,
+    });
+
+    return await this.repo.save(group);
+  }
+
+  async update(id: number, data: { name: string }) {
+    const group = await this.findOne(id);
+
+    group.name = data.name;
+
+    return await this.repo.save(group);
+  }
+
+  async delete(id: number) {
+    const group = await this.findOne(id);
+    await this.repo.remove(group);
+  }
+}
+```
+
+---
+
+### 🔹 Repository — доступ до бази даних
+
+TypeORM репозиторії відповідають за:
+
+- пошук даних
+- створення та збереження сутностей
+- завантаження звʼязків `(relations: ['children'])`
+
+> Контролери і middleware не мають напряму працювати з БД
+
+# Висновок
