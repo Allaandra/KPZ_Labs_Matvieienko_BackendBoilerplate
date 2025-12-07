@@ -6,7 +6,6 @@ import { KindergartenGroup } from '../../orm/entities/users/KindergartenGroup';
 export async function validateUpdateChild(req: Request, res: Response, next: NextFunction) {
   const { groupId, firstName, lastName, patronymic, birthdayDate } = req.body;
 
-  // --- Проверяем groupId только если его прислали ---
   if (groupId !== undefined) {
     if (isNaN(Number(groupId))) {
       return res.status(400).json({
@@ -26,7 +25,6 @@ export async function validateUpdateChild(req: Request, res: Response, next: Nex
       });
     }
 
-    // сохраняем найденную группу
     (req as any).newGroup = group;
   }
 

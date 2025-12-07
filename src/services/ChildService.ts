@@ -24,7 +24,6 @@ export class ChildService {
   async create(data: any) {
     const { firstName, lastName, patronymic, birthdayDate, groupId } = data;
 
-    // Проверяем существование группы
     const group = await this.groupRepository.findOne({
       where: { id: groupId },
     });
@@ -33,7 +32,6 @@ export class ChildService {
       throw new AppError('Group not found', 404);
     }
 
-    // Создаем ребёнка
     const child = this.childRepository.create({
       firstName,
       lastName,
@@ -51,14 +49,13 @@ export class ChildService {
   }
 
   async update(id: number, data: any) {
-    const child = await this.findOne(id); // если нет — кинет ошибку
+    const child = await this.findOne(id);
 
     if (data.firstName !== undefined) child.firstName = data.firstName;
     if (data.lastName !== undefined) child.lastName = data.lastName;
     if (data.patronymic !== undefined) child.patronymic = data.patronymic;
     if (data.birthdayDate !== undefined) child.birthdayDate = data.birthdayDate;
 
-    // Если изменили группу:
     if (data.groupId !== undefined) {
       const oldGroup = child.group;
 
@@ -66,10 +63,8 @@ export class ChildService {
         where: { id: data.groupId },
       });
 
-      // Переносим в новую группу
       child.group = newGroup;
 
-      // Обновляем счетчики
       if (oldGroup.id !== newGroup.id) {
         oldGroup.childCount -= 1;
         newGroup.childCount += 1;
@@ -89,7 +84,6 @@ export class ChildService {
 
     await this.childRepository.remove(child);
 
-    // Уменьшаем количество детей
     group.childCount -= 1;
     if (group.childCount < 0) group.childCount = 0;
 

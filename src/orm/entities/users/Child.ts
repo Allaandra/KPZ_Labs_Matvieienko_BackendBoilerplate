@@ -22,7 +22,7 @@ export class Child {
   // Многие дети → одна группа
   @ManyToOne(() => KindergartenGroup, (group) => group.children, {
     nullable: true,
-    onDelete: 'SET NULL', // или 'CASCADE' — как тебе удобнее
+    onDelete: 'SET NULL',
   })
   @JoinColumn({ name: 'groups_id' })
   group?: KindergartenGroup;
