@@ -35,6 +35,5 @@ export async function validateDeleteGroup(req: Request, res: Response, next: Nex
     });
   }
 
-  // Всё ок — продолжаем
   return next();
 }
